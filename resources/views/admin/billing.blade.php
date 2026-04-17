@@ -65,6 +65,7 @@
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Balance</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
@@ -84,6 +85,12 @@
                     </td>
                     <td class="px-6 py-3.5">
                         <span class="{{ $invoice->statusBadgeClass() }}">{{ ucfirst($invoice->status) }}</span>
+                    </td>
+                    <td class="px-6 py-3.5">
+                        <a href="{{ route('admin.billing.show', $invoice) }}"
+                           class="text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">
+                            View
+                        </a>
                     </td>
                 </tr>
                 @endforeach

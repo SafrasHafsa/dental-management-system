@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\ClinicSetting;
 use App\Models\Invoice;
 use App\Models\Payment;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class BillingController extends Controller
@@ -101,8 +104,19 @@ class BillingController extends Controller
         return view('staff.billing-show', compact('invoice'));
     }
 
-    public function pdf(Invoice $invoice): RedirectResponse
+    public function pdf(Invoice $invoice): Response
     {
-        return back()->with('info', 'PDF generation coming soon.');
+        $invoice->load(['appointment.patient', 'appointment.doctorProfile.user', 'appointment.service', 'payments']);
+
+        $pdf = Pdf::loadView('pdf.invoice', [
+            'invoice'       => $invoice,
+            'clinicName'    => ClinicSetting::get('clinic_name', 'SmileCare Dental Clinic'),
+            'clinicAddress' => ClinicSetting::get('clinic_address', ''),
+            'clinicPhone'   => ClinicSetting::get('clinic_phone', ''),
+            'clinicEmail'   => ClinicSetting::get('clinic_email', ''),
+            'currency'      => ClinicSetting::get('currency_symbol', 'Rs.'),
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->download($invoice->invoice_number . '.pdf');
     }
 }

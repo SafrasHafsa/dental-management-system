@@ -36,6 +36,16 @@
 </div>
 @endif
 
+@if($errors->any())
+<div class="bg-red-50 border border-red-200 rounded-2xl px-5 py-4 mb-5">
+    <ul class="text-sm text-red-700 list-disc list-inside space-y-1">
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <form method="POST" action="{{ route('admin.settings.update') }}" class="max-w-2xl space-y-5">
     @csrf
 
@@ -44,23 +54,23 @@
         <h3 class="font-semibold text-gray-900 mb-5">Clinic Information</h3>
         <div class="space-y-4">
             <div>
-                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Clinic Name</label>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Clinic Name <span class="text-red-500">*</span></label>
                 <input type="text" name="clinic_name"
-                       value="{{ old('clinic_name', $settings['clinic_name']) }}"
+                       value="{{ old('clinic_name', $settings->get('clinic_name')) }}"
                        class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Phone</label>
                     <input type="text" name="clinic_phone"
-                           value="{{ old('clinic_phone', $settings['clinic_phone']) }}"
+                           value="{{ old('clinic_phone', $settings->get('clinic_phone')) }}"
                            placeholder="+94 11 123 4567"
                            class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Email</label>
                     <input type="email" name="clinic_email"
-                           value="{{ old('clinic_email', $settings['clinic_email']) }}"
+                           value="{{ old('clinic_email', $settings->get('clinic_email')) }}"
                            placeholder="clinic@example.com"
                            class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
                 </div>
@@ -69,7 +79,7 @@
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Address</label>
                 <textarea name="clinic_address" rows="2"
                           class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
-                          placeholder="123 Main St, Colombo 03">{{ old('clinic_address', $settings['clinic_address']) }}</textarea>
+                          placeholder="123 Main St, Colombo 03">{{ old('clinic_address', $settings->get('clinic_address')) }}</textarea>
             </div>
         </div>
     </div>
@@ -81,17 +91,36 @@
             <div>
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Default Tax Rate (%)</label>
                 <input type="number" name="tax_rate" min="0" max="100" step="0.01"
-                       value="{{ old('tax_rate', $settings['tax_rate']) }}"
+                       value="{{ old('tax_rate', $settings->get('tax_rate', 0)) }}"
                        class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                        placeholder="0">
                 <p class="text-xs text-gray-400 mt-1">Applied automatically on new invoices.</p>
             </div>
             <div>
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Currency Symbol</label>
-                <input type="text" name="currency"
-                       value="{{ old('currency', $settings['currency']) }}"
+                <input type="text" name="currency_symbol"
+                       value="{{ old('currency_symbol', $settings->get('currency_symbol', 'Rs.')) }}"
                        class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                        placeholder="Rs.">
+            </div>
+        </div>
+    </div>
+
+    {{-- Working hours --}}
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <h3 class="font-semibold text-gray-900 mb-5">Working Hours</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Opens At</label>
+                <input type="time" name="working_hours_start"
+                       value="{{ old('working_hours_start', $settings->get('working_hours_start', '08:00')) }}"
+                       class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wider">Closes At</label>
+                <input type="time" name="working_hours_end"
+                       value="{{ old('working_hours_end', $settings->get('working_hours_end', '17:00')) }}"
+                       class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
             </div>
         </div>
     </div>

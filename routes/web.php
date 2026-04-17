@@ -68,7 +68,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('/appointments',              [\App\Http\Controllers\Admin\AppointmentController::class, 'store'])->name('appointments.store');
     Route::get('/appointments/{appointment}', [\App\Http\Controllers\Admin\AppointmentController::class, 'show'])->name('appointments.show');
     // Billing
-    Route::get('/billing',       [\App\Http\Controllers\Admin\BillingController::class, 'index'])->name('billing');
+    Route::get('/billing',              [\App\Http\Controllers\Admin\BillingController::class, 'index'])->name('billing');
+    Route::get('/billing/{invoice}',    [\App\Http\Controllers\Admin\BillingController::class, 'show'])->name('billing.show');
+    Route::get('/billing/{invoice}/pdf',[\App\Http\Controllers\Admin\BillingController::class, 'pdf'])->name('billing.pdf');
     // Inventory
     Route::get('/inventory',     [\App\Http\Controllers\Admin\InventoryController::class, 'index'])->name('inventory');
     // Reports
@@ -89,8 +91,9 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff,admin'])
     Route::get('/appointments',             [\App\Http\Controllers\Staff\AppointmentController::class, 'index'])->name('appointments');
     Route::post('/appointments',            [\App\Http\Controllers\Staff\AppointmentController::class, 'store'])->name('appointments.store');
     Route::get('/appointments/{appointment}',[\App\Http\Controllers\Staff\AppointmentController::class, 'show'])->name('appointments.show');
-    Route::patch('/appointments/{appointment}/approve', [\App\Http\Controllers\Staff\AppointmentController::class, 'approve'])->name('appointments.approve');
-    Route::patch('/appointments/{appointment}/cancel',  [\App\Http\Controllers\Staff\AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::patch('/appointments/{appointment}/approve',    [\App\Http\Controllers\Staff\AppointmentController::class, 'approve'])->name('appointments.approve');
+    Route::patch('/appointments/{appointment}/cancel',     [\App\Http\Controllers\Staff\AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::patch('/appointments/{appointment}/reschedule', [\App\Http\Controllers\Staff\AppointmentController::class, 'reschedule'])->name('appointments.reschedule');
 
     // Patients
     Route::resource('patients', \App\Http\Controllers\Staff\PatientController::class)
@@ -107,11 +110,12 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff,admin'])
     Route::get('/billing/{invoice}/pdf',        [\App\Http\Controllers\Staff\BillingController::class, 'pdf'])->name('billing.pdf');
 
     // Inventory
-    Route::get('/inventory',                    [\App\Http\Controllers\Staff\InventoryController::class, 'index'])->name('inventory');
+    Route::get('/inventory',                          [\App\Http\Controllers\Staff\InventoryController::class, 'index'])->name('inventory');
+    Route::get('/inventory/items/{item}/movements',   [\App\Http\Controllers\Staff\InventoryController::class, 'movements'])->name('inventory.movements');
+    Route::post('/inventory/items/{item}/adjust',     [\App\Http\Controllers\Staff\InventoryController::class, 'adjustStock'])->name('inventory.adjust');
     Route::resource('inventory/items', \App\Http\Controllers\Staff\InventoryItemController::class)
         ->names(['index' => 'inventory.items', 'create' => 'inventory.items.create', 'store' => 'inventory.items.store',
                  'show' => 'inventory.items.show', 'edit' => 'inventory.items.edit', 'update' => 'inventory.items.update', 'destroy' => 'inventory.items.destroy']);
-    Route::post('/inventory/items/{item}/adjust', [\App\Http\Controllers\Staff\InventoryController::class, 'adjustStock'])->name('inventory.adjust');
 });
 
 // ════════════════════════════════════════════════════════════

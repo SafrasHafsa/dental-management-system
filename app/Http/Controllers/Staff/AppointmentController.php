@@ -83,4 +83,27 @@ class AppointmentController extends Controller
         $appointment->update(['status' => 'cancelled']);
         return back()->with('success', 'Appointment cancelled.');
     }
+
+    public function reschedule(Request $request, Appointment $appointment): RedirectResponse
+    {
+        $request->validate([
+            'appointment_date' => 'required|date|after_or_equal:today',
+            'start_time'       => 'required',
+            'notes'            => 'nullable|string|max:500',
+        ]);
+
+        $service  = $appointment->service;
+        $duration = $service?->duration_minutes ?? 30;
+        $start    = \Carbon\Carbon::parse($request->appointment_date . ' ' . $request->start_time);
+
+        $appointment->update([
+            'appointment_date' => $request->appointment_date,
+            'start_time'       => $start->format('H:i:s'),
+            'end_time'         => $start->copy()->addMinutes($duration)->format('H:i:s'),
+            'status'           => 'pending',
+            'notes'            => $request->notes ?? $appointment->notes,
+        ]);
+
+        return back()->with('success', 'Appointment rescheduled successfully.');
+    }
 }
