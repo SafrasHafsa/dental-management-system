@@ -45,6 +45,7 @@
             } finally { this.adjLoading = false; }
         }
     }"
+    @open-adjust.window="openAdjust($event.detail)"
 >
 
 {{-- Toolbar --}}
@@ -119,7 +120,7 @@
                     <td class="px-6 py-3.5">
                         <div class="flex items-center gap-2 flex-wrap">
                             <button
-                                @click="openAdjust({ id: @js($item->id), name: @js($item->name), stock: {{ $item->current_stock }}, url: '{{ route('staff.inventory.adjust', $item) }}' })"
+                                onclick="window.dispatchEvent(new CustomEvent('open-adjust',{detail:{id:{{ json_encode($item->id) }},name:{{ json_encode($item->name) }},stock:{{ $item->current_stock }},url:'{{ route('staff.inventory.adjust', $item) }}'}}));"
                                 class="text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors">
                                 Adjust
                             </button>
@@ -243,10 +244,8 @@
     </div>
 </div>
 
-</div>
-@endsection
 
-{{-- Adjust Stock Modal --}}
+{{-- Adjust Stock Modal (inside x-data so Alpine directives work) --}}
 <div x-show="showAdjust" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
      x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
      x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
@@ -303,6 +302,9 @@
         </div>
     </div>
 </div>
+
+</div>{{-- end x-data --}}
+@endsection
 
 @push('scripts')
 <script>$(document).ready(function(){ initDT('#inventory-dt', {order:[[0,'asc']]}); });</script>

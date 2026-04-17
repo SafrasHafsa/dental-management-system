@@ -74,8 +74,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Inventory
     Route::get('/inventory',     [\App\Http\Controllers\Admin\InventoryController::class, 'index'])->name('inventory');
     // Reports
-    Route::get('/reports',       [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports');
-    Route::get('/reports/revenue',[\App\Http\Controllers\Admin\ReportController::class, 'revenue'])->name('reports.revenue');
+    Route::get('/reports',                    [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports');
+    Route::get('/reports/revenue',            [\App\Http\Controllers\Admin\ReportController::class, 'revenue'])->name('reports.revenue');
+    Route::get('/reports/export/revenue',     [\App\Http\Controllers\Admin\ReportController::class, 'exportRevenue'])->name('reports.export.revenue');
+    Route::get('/reports/export/appointments',[\App\Http\Controllers\Admin\ReportController::class, 'exportAppointments'])->name('reports.export.appointments');
+    Route::get('/reports/export/patients',    [\App\Http\Controllers\Admin\ReportController::class, 'exportPatients'])->name('reports.export.patients');
+    Route::get('/reports/export/inventory',   [\App\Http\Controllers\Admin\ReportController::class, 'exportInventory'])->name('reports.export.inventory');
     // Settings
     Route::get('/settings',      [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings');
     Route::post('/settings',     [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');

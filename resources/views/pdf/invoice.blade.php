@@ -190,11 +190,11 @@
         <div class="payment-row">
             <div>
                 <span class="payment-amount">{{ $currency }}{{ number_format($payment->amount, 2) }}</span>
-                <span class="payment-meta"> &nbsp;·&nbsp; {{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}
+                <span class="payment-meta"> &nbsp;·&nbsp; {{ ucfirst(str_replace('_', ' ', $payment->method)) }}
                 @if($payment->reference_number) &nbsp;·&nbsp; Ref: {{ $payment->reference_number }}@endif
                 </span>
             </div>
-            <div class="payment-meta">{{ $payment->payment_date->format('d M Y') }}</div>
+            <div class="payment-meta">{{ $payment->paid_at->format('d M Y') }}</div>
         </div>
         @endforeach
     </div>

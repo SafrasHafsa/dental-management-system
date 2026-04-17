@@ -44,7 +44,7 @@
                         Rs.{{ number_format($invoice->balance_due, 2) }}
                     </td>
                     <td class="px-6 py-3.5">
-                        <span class="{{ $invoice->statusBadgeClass() }}">{{ ucfirst($invoice->status) }}</span>
+                        <span class="{{ $invoice->statusBadgeClass() }}">{{ $invoice->statusLabel() }}</span>
                     </td>
                     <td class="px-6 py-3.5">
                         <a href="{{ route('patient.invoices.show', $invoice) }}"

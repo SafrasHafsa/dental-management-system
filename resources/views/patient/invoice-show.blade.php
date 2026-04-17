@@ -31,7 +31,7 @@
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         <div class="flex items-center justify-between mb-5">
             <h3 class="font-semibold text-gray-900">Invoice Details</h3>
-            <span class="{{ $invoice->statusBadgeClass() }} text-sm px-3 py-1">{{ ucfirst($invoice->status) }}</span>
+            <span class="{{ $invoice->statusBadgeClass() }} text-sm px-3 py-1">{{ $invoice->statusLabel() }}</span>
         </div>
         <div class="space-y-3 text-sm">
             <div class="flex justify-between py-2 border-b border-gray-50">
@@ -92,9 +92,9 @@
                 <div>
                     <p class="text-sm font-medium text-gray-900">Rs.{{ number_format($payment->amount, 2) }}</p>
                     <p class="text-xs text-gray-400">
-                        {{ \Carbon\Carbon::parse($payment->payment_date)->format('M d, Y') }}
-                        @if($payment->payment_method)
-                        &middot; {{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}
+                        {{ \Carbon\Carbon::parse($payment->paid_at)->format('M d, Y') }}
+                        @if($payment->method)
+                        &middot; {{ ucfirst(str_replace('_', ' ', $payment->method)) }}
                         @endif
                     </p>
                 </div>

@@ -109,7 +109,7 @@
             </div>
             <div class="text-right">
                 <p class="text-sm font-semibold text-gray-900">Rs.{{ number_format($invoice->total_amount, 2) }}</p>
-                <span class="{{ $invoice->statusBadgeClass() }} mt-1 inline-block">{{ ucfirst($invoice->status) }}</span>
+                <span class="{{ $invoice->statusBadgeClass() }} mt-1 inline-block">{{ $invoice->statusLabel() }}</span>
             </div>
         </div>
         @empty

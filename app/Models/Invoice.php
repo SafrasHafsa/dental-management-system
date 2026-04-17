@@ -68,12 +68,25 @@ class Invoice extends Model
     {
         return match ($this->status) {
             'draft'   => 'badge-gray',
-            'sent'    => 'badge-blue',
+            'sent'    => 'badge-yellow',
             'partial' => 'badge-yellow',
             'paid'    => 'badge-green',
             'overdue' => 'badge-red',
             'void'    => 'badge-gray',
             default   => 'badge-gray',
+        };
+    }
+
+    public function statusLabel(): string
+    {
+        return match ($this->status) {
+            'sent'    => 'Unpaid',
+            'partial' => 'Partially Paid',
+            'paid'    => 'Paid',
+            'overdue' => 'Overdue',
+            'draft'   => 'Draft',
+            'void'    => 'Void',
+            default   => ucfirst($this->status),
         };
     }
 
@@ -93,7 +106,7 @@ class Invoice extends Model
             'tax_amount'      => $tax,
             'total_amount'    => $total,
             'balance_due'     => max(0, $balance),
-            'status'          => $balance <= 0 ? 'paid' : ($this->paid_amount > 0 ? 'partial' : $this->status),
+            'status'          => $balance <= 0 ? 'paid' : ($this->paid_amount > 0 ? 'partial' : 'sent'),
         ]);
     }
 }

@@ -51,7 +51,7 @@ class BillingController extends Controller
             'invoice_number'  => 'INV-' . date('Y') . '-' . str_pad(Invoice::withTrashed()->count() + 1, 5, '0', STR_PAD_LEFT),
             'appointment_id'  => $appointment->id,
             'patient_id'      => $appointment->patient_id,
-            'issued_by'       => auth()->id(),
+            'created_by'      => auth()->id(),
             'issue_date'      => now(),
             'due_date'        => now()->addDays(7),
             'subtotal'        => $subtotal,
@@ -60,7 +60,7 @@ class BillingController extends Controller
             'discount_amount' => $discount,
             'total_amount'    => $total,
             'balance_due'     => $total,
-            'status'          => 'unpaid',
+            'status'          => 'sent',
             'notes'           => $request->notes,
         ]);
 
@@ -83,17 +83,29 @@ class BillingController extends Controller
             'notes'           => 'nullable|string|max:255',
         ]);
 
+        $invoice->load('appointment');
         Payment::create([
+            'payment_number'   => 'PAY-' . date('Y') . '-' . str_pad(Payment::count() + 1, 5, '0', STR_PAD_LEFT),
             'invoice_id'       => $invoice->id,
+            'patient_id'       => $invoice->appointment->patient_id,
             'received_by'      => auth()->id(),
             'amount'           => $request->amount,
-            'payment_method'   => $request->payment_method,
+            'method'           => $request->payment_method,
             'reference_number' => $request->reference_number,
-            'payment_date'     => now(),
+            'status'           => 'completed',
             'notes'            => $request->notes,
+            'paid_at'          => now(),
         ]);
 
-        $invoice->recalculate();
+        // Recalculate paid_amount and balance from payments table directly
+        $invoice->load('payments');
+        $paid    = $invoice->payments->sum('amount');
+        $balance = $invoice->total_amount - $paid;
+        $invoice->update([
+            'paid_amount' => $paid,
+            'balance_due' => max(0, $balance),
+            'status'      => $balance <= 0 ? 'paid' : ($paid > 0 ? 'partial' : 'sent'),
+        ]);
 
         return back()->with('success', 'Payment of Rs.' . number_format($request->amount, 2) . ' recorded.');
     }
@@ -101,7 +113,12 @@ class BillingController extends Controller
     public function print(Invoice $invoice): View
     {
         $invoice->load(['appointment.patient', 'appointment.doctorProfile.user', 'appointment.service', 'payments']);
-        return view('staff.billing-show', compact('invoice'));
+        $clinicName    = ClinicSetting::get('clinic_name', 'SmileCare Dental Clinic');
+        $clinicAddress = ClinicSetting::get('clinic_address', '');
+        $clinicPhone   = ClinicSetting::get('clinic_phone', '');
+        $clinicEmail   = ClinicSetting::get('clinic_email', '');
+        $currency      = ClinicSetting::get('currency_symbol', 'Rs.');
+        return view('print.invoice', compact('invoice', 'clinicName', 'clinicAddress', 'clinicPhone', 'clinicEmail', 'currency'));
     }
 
     public function pdf(Invoice $invoice): Response

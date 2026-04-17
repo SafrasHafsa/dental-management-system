@@ -31,7 +31,7 @@
 <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
     @php
         $totalRevenue   = $invoices->whereIn('status',['paid','partial'])->sum('paid_amount');
-        $outstanding    = $invoices->whereIn('status',['unpaid','partial','overdue'])->sum('balance_due');
+        $outstanding    = $invoices->whereIn('status',['sent','partial','overdue'])->sum('balance_due');
         $paidCount      = $invoices->where('status','paid')->count();
         $overdueCount   = $invoices->where('status','overdue')->count();
     @endphp
@@ -84,7 +84,7 @@
                         Rs.{{ number_format($invoice->balance_due, 2) }}
                     </td>
                     <td class="px-6 py-3.5">
-                        <span class="{{ $invoice->statusBadgeClass() }}">{{ ucfirst($invoice->status) }}</span>
+                        <span class="{{ $invoice->statusBadgeClass() }}">{{ $invoice->statusLabel() }}</span>
                     </td>
                     <td class="px-6 py-3.5">
                         <a href="{{ route('admin.billing.show', $invoice) }}"

@@ -93,28 +93,28 @@
             @foreach($appointment->clinicalNotes->sortByDesc('created_at') as $cn)
             <div class="border border-gray-100 rounded-xl p-4 mb-3 last:mb-0">
                 <p class="text-xs text-gray-400 mb-3">{{ $cn->created_at->format('M d, Y g:i A') }}</p>
-                @if($cn->chief_complaint)
+                @if($cn->subjective)
                 <div class="mb-2">
                     <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-0.5">Chief Complaint</p>
-                    <p class="text-sm text-gray-700">{{ $cn->chief_complaint }}</p>
+                    <p class="text-sm text-gray-700">{{ $cn->subjective }}</p>
                 </div>
                 @endif
-                @if($cn->diagnosis)
+                @if($cn->assessment)
                 <div class="mb-2">
                     <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-0.5">Diagnosis</p>
-                    <p class="text-sm text-gray-700">{{ $cn->diagnosis }}</p>
+                    <p class="text-sm text-gray-700">{{ $cn->assessment }}</p>
                 </div>
                 @endif
-                @if($cn->treatment)
+                @if($cn->procedures_done)
                 <div class="mb-2">
                     <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-0.5">Treatment Done</p>
-                    <p class="text-sm text-gray-700">{{ $cn->treatment }}</p>
+                    <p class="text-sm text-gray-700">{{ $cn->procedures_done }}</p>
                 </div>
                 @endif
-                @if($cn->notes)
+                @if($cn->plan)
                 <div>
                     <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-0.5">Prescriptions / Notes</p>
-                    <p class="text-sm text-gray-700">{{ $cn->notes }}</p>
+                    <p class="text-sm text-gray-700">{{ $cn->plan }}</p>
                 </div>
                 @endif
             </div>

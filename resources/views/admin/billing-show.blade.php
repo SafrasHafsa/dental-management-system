@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="flex items-center gap-2">
-        <span class="{{ $invoice->statusBadgeClass() }} text-sm px-3 py-1">{{ ucfirst($invoice->status) }}</span>
+        <span class="{{ $invoice->statusBadgeClass() }} text-sm px-3 py-1">{{ $invoice->statusLabel() }}</span>
         <a href="{{ route('admin.billing.pdf', $invoice) }}"
            class="text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-xl transition-colors">
             Download PDF
@@ -135,8 +135,8 @@
                     <div>
                         <p class="text-sm font-medium text-gray-900">Rs.{{ number_format($payment->amount, 2) }}</p>
                         <p class="text-xs text-gray-400">
-                            {{ $payment->payment_date->format('M d, Y g:i A') }}
-                            · {{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}
+                            {{ $payment->paid_at->format('M d, Y g:i A') }}
+                            · {{ ucfirst(str_replace('_', ' ', $payment->method)) }}
                             @if($payment->reference_number) · Ref: {{ $payment->reference_number }}@endif
                         </p>
                     </div>

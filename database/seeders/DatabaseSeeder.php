@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             ServicesSeeder::class,
             ClinicSettingsSeeder::class,
+            InventorySeeder::class,
         ]);
     }
 }

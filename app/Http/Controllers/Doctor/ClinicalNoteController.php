@@ -13,7 +13,16 @@ class ClinicalNoteController extends Controller
 {
     public function create(Appointment $appointment): View
     {
-        $note = $appointment->clinicalNotes()->latest()->first();
+        $raw  = $appointment->clinicalNotes()->latest()->first();
+
+        // Map DB columns back to view field names so the form can prefill
+        $note = $raw ? (object) [
+            'chief_complaint' => $raw->subjective,
+            'diagnosis'       => $raw->assessment,
+            'treatment'       => $raw->procedures_done,
+            'notes'           => $raw->plan,
+        ] : null;
+
         return view('doctor.appointments.notes', compact('appointment', 'note'));
     }
 
@@ -26,12 +35,13 @@ class ClinicalNoteController extends Controller
             'notes'           => 'nullable|string|max:2000',
         ]);
 
+        // Map view field names → DB column names (SOAP format)
         $appointment->clinicalNotes()->create([
-            'doctor_profile_id' => $appointment->doctor_profile_id,
-            'chief_complaint'   => $request->chief_complaint,
-            'diagnosis'         => $request->diagnosis,
-            'treatment'         => $request->treatment,
-            'notes'             => $request->notes,
+            'doctor_id'       => auth()->id(),
+            'subjective'      => $request->chief_complaint,   // what patient reports
+            'assessment'      => $request->diagnosis,          // doctor's diagnosis
+            'procedures_done' => $request->treatment,          // what was done
+            'plan'            => $request->notes,              // prescriptions / follow-up
         ]);
 
         return redirect()->route('doctor.appointments')

@@ -71,6 +71,11 @@ class Appointment extends Model
         return $this->hasOne(ClinicalNote::class);
     }
 
+    public function clinicalNotes(): HasMany
+    {
+        return $this->hasMany(ClinicalNote::class);
+    }
+
     public function reminders(): HasMany
     {
         return $this->hasMany(AppointmentReminder::class);
