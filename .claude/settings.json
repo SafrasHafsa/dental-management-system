@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker info:*)",
+      "Read(//c/tmp/dental-fresh/**)",
+      "Bash(mkdir -p \"C:/laravel-temp\")",
+      "Bash(docker run:*)",
+      "Bash(docker exec:*)"
+    ]
+  }
+}
