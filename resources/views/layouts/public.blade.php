@@ -103,7 +103,7 @@
                                       d="M4.5 12.5c0-4.142 3.358-7.5 7.5-7.5s7.5 3.358 7.5 7.5c0 1.818-.648 3.484-1.716 4.784M12 17v4"/>
                             </svg>
                         </div>
-                        <span class="text-white font-bold">SmileCare</span>
+                        <span class="text-white font-bold">CityDentalSurgery</span>
                     </div>
                     <p class="text-sm text-gray-400 max-w-xs">Professional dental care delivered with compassion. Your healthy smile is our mission.</p>
                 </div>
@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div class="mt-8 pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
-                &copy; {{ date('Y') }} SmileCare Dental Clinic. All rights reserved.
+                &copy; {{ date('Y') }} City Dental Surgery. All rights reserved.
             </div>
         </div>
     </footer>

@@ -18,14 +18,15 @@
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
         <div class="max-w-2xl">
             <span class="inline-block bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">
-                Trusted Dental Care Since 2010
+                Trusted Dental Care Since 2023
+
             </span>
             <h1 class="text-4xl lg:text-6xl font-extrabold leading-tight mb-6">
                 Your Healthy Smile<br>
                 <span class="text-primary-200">Starts Here</span>
             </h1>
             <p class="text-lg text-primary-100 mb-8 max-w-xl">
-                SmileCare Dental Clinic offers comprehensive dental services with compassion and expertise.
+                City Dental Surgery offers comprehensive dental services with compassion and expertise.
                 Book your appointment in minutes — no long waits, no hassle.
             </p>
             <div class="flex flex-wrap gap-4">
@@ -57,10 +58,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             @foreach([
-                ['2,500+', 'Happy Patients', 'text-primary-600'],
-                ['15+', 'Years Experience', 'text-green-600'],
-                ['8', 'Expert Doctors', 'text-purple-600'],
-                ['20+', 'Dental Services', 'text-orange-600'],
+                ['1,500+', 'Happy Patients', 'text-primary-600'],
+                ['3+', 'Years Experience', 'text-green-600'],
+                ['4', 'Expert Doctors', 'text-purple-600'],
+                ['10+', 'Dental Services', 'text-orange-600'],
             ] as [$num, $label, $color])
             <div class="p-4">
                 <p class="text-3xl font-extrabold {{ $color }}">{{ $num }}</p>

@@ -56,7 +56,7 @@
                 </svg>
             </div>
             <div>
-                <p class="text-sm font-bold text-white leading-none">SmileCare</p>
+                <p class="text-sm font-bold text-white leading-none">CityDentalSurgery</p>
                 <p class="text-xs text-gray-500 mt-0.5">Dental Clinic</p>
             </div>
         </div>

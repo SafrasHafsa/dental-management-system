@@ -6,8 +6,8 @@
 
 <section class="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-14">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl font-bold mb-3">About SmileCare</h1>
-        <p class="text-primary-100 max-w-xl mx-auto">Dedicated to delivering exceptional dental care with compassion since 2010.</p>
+        <h1 class="text-4xl font-bold mb-3">About CityDentalSurgery</h1>
+        <p class="text-primary-100 max-w-xl mx-auto">Dedicated to delivering exceptional dental care with compassion since 2023.</p>
     </div>
 </section>
 
@@ -16,8 +16,8 @@
         <div>
             <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
             <p class="text-gray-600 mb-4">
-                At SmileCare Dental Clinic, we believe everyone deserves a healthy, beautiful smile. Founded in 2010,
-                our clinic has grown to become one of Manila's most trusted dental practices, combining the latest
+                At City Dental Surgery, we believe everyone deserves a healthy, beautiful smile. Founded in 2010,
+                our clinic has grown to become one of Kurunegala's most trusted dental practices, combining the latest
                 dental technology with a warm, patient-centered approach.
             </p>
             <p class="text-gray-600 mb-6">
@@ -26,10 +26,10 @@
             </p>
             <div class="grid grid-cols-2 gap-4">
                 @foreach([
-                    ['2,500+', 'Patients Served'],
-                    ['15+', 'Years of Excellence'],
-                    ['8', 'Expert Dentists'],
-                    ['20+', 'Procedures Offered'],
+                    ['1,500+', 'Patients Served'],
+                    ['3+', 'Years of Excellence'],
+                    ['4', 'Expert Dentists'],
+                    ['10+', 'Procedures Offered'],
                 ] as [$num, $label])
                 <div class="bg-primary-50 rounded-xl p-4 text-center">
                     <p class="text-2xl font-bold text-primary-600">{{ $num }}</p>
@@ -43,7 +43,7 @@
                 <svg class="w-20 h-20 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
-                <p class="text-sm">SmileCare Clinic</p>
+                <p class="text-sm">City Dental Surgery</p>
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@
 
     {{-- CTA --}}
     <div class="bg-primary-600 rounded-2xl p-10 text-center text-white">
-        <h3 class="text-2xl font-bold mb-3">Experience SmileCare</h3>
+        <h3 class="text-2xl font-bold mb-3">Experience City Dental Surgery</h3>
         <p class="text-primary-100 mb-6">Book your first appointment today and join our growing family of healthy smiles.</p>
         <a href="{{ route('book.index') }}" class="inline-block bg-white text-primary-700 px-8 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors">
             Book Appointment
