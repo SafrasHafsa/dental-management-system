@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Book an Appointment — SmileCare')
+@section('title', 'Book an Appointment — City Dental Surgery')
 
 @section('content')
 

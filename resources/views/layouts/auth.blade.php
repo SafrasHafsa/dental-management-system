@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Sign In') — SmileCare</title>
+    <title>@yield('title', 'Sign In') — City Dental Surgery</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
@@ -19,7 +19,7 @@
                           d="M4.5 12.5c0-4.142 3.358-7.5 7.5-7.5s7.5 3.358 7.5 7.5c0 1.818-.648 3.484-1.716 4.784M12 17v4"/>
                 </svg>
             </div>
-            <span class="text-xl font-bold text-gray-900">SmileCare</span>
+            <span class="text-xl font-bold text-gray-900">City Dental Surgery</span>
         </a>
         <p class="mt-2 text-sm text-gray-500">@yield('subtitle', 'Dental Clinic Management')</p>
     </div>
@@ -31,7 +31,7 @@
 
     {{-- Footer links --}}
     <p class="mt-6 text-center text-xs text-gray-400">
-        &copy; {{ date('Y') }} SmileCare Dental Clinic
+        &copy; {{ date('Y') }} City Dental Surgery Dental Clinic
         &nbsp;·&nbsp;
         <a href="{{ route('home') }}" class="hover:text-primary-600 transition-colors">Back to website</a>
     </p>

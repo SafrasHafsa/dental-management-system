@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'SmileCare Dental Clinic')</title>
+    <title>@yield('title', 'City Dental Surgery Dental Clinic')</title>
     <meta name="description" content="@yield('description', 'Professional dental care for the whole family.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -23,7 +23,7 @@
                                   d="M4.5 12.5c0-4.142 3.358-7.5 7.5-7.5s7.5 3.358 7.5 7.5c0 1.818-.648 3.484-1.716 4.784M12 17v4m0 0H9m3 0h3"/>
                         </svg>
                     </div>
-                    <span class="text-lg font-bold text-gray-900">SmileCare</span>
+                    <span class="text-lg font-bold text-gray-900">City Dental Surgery</span>
                 </a>
 
                 {{-- Desktop nav --}}
@@ -119,10 +119,10 @@
                 <div>
                     <h4 class="text-white font-semibold text-sm mb-3">Contact</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
-                        <li>123 Mabini St., Manila</li>
-                        <li>+63 2 8123-4567</li>
-                        <li>info@smilecare.ph</li>
-                        <li>Mon–Sat: 8AM – 5PM</li>
+                        <li>{{ $clinicSettings['clinic_address'] ?? '' }}</li>
+                        <li>{{ $clinicSettings['clinic_phone'] ?? '' }}</li>
+                        <li>{{ $clinicSettings['clinic_email'] ?? '' }}</li>
+                        <li>Mon–Sat: {{ $clinicSettings['working_hours_start'] ?? '08:00' }} – {{ $clinicSettings['working_hours_end'] ?? '17:00' }}</li>
                     </ul>
                 </div>
             </div>
@@ -131,6 +131,6 @@
             </div>
         </div>
     </footer>
-
+    @stack('scripts')    
 </body>
 </html>

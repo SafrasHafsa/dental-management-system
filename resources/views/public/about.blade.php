@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'About Us — SmileCare Dental Clinic')
+@section('title', 'About Us — City Dental Surgery Dental Clinic')
 
 @section('content')
 
@@ -50,7 +50,7 @@
 
     {{-- Values --}}
     <div class="mb-16">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Why Choose SmileCare?</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Why Choose City Dental Surgery?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach([
                 ['Expert Team', 'Our dentists hold advanced degrees and regularly attend continuing education to bring you the best care.', 'bg-blue-50 text-blue-600'],

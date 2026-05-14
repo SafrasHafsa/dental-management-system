@@ -10,10 +10,10 @@ class ClinicSettingsSeeder extends Seeder
     public function run(): void
     {
         $settings = [
-            ['key' => 'clinic_name',      'value' => 'SmileCare Dental Clinic', 'type' => 'string',  'group' => 'general'],
-            ['key' => 'clinic_address',   'value' => '123 Mabini St., Manila',  'type' => 'string',  'group' => 'general'],
-            ['key' => 'clinic_phone',     'value' => '+63 2 8123-4567',         'type' => 'string',  'group' => 'general'],
-            ['key' => 'clinic_email',     'value' => 'info@smilecare.ph',       'type' => 'string',  'group' => 'general'],
+            ['key' => 'clinic_name',      'value' => 'City Dental Surgery', 'type' => 'string',  'group' => 'general'],
+            ['key' => 'clinic_address',   'value' => 'Mallawapitiya, Kandy Road, Kurunegala',  'type' => 'string',  'group' => 'general'],
+            ['key' => 'clinic_phone',     'value' => '+94 761444721',         'type' => 'string',  'group' => 'general'],
+            ['key' => 'clinic_email',     'value' => 'info@citydentalSurgery.com',       'type' => 'string',  'group' => 'general'],
             ['key' => 'clinic_logo',      'value' => null,                      'type' => 'string',  'group' => 'general'],
             ['key' => 'currency',         'value' => 'PHP',                     'type' => 'string',  'group' => 'billing'],
             ['key' => 'currency_symbol',  'value' => '₱',                      'type' => 'string',  'group' => 'billing'],

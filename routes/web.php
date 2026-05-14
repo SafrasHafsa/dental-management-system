@@ -141,6 +141,10 @@ Route::prefix('doctor')->name('doctor.')->middleware(['auth', 'role:doctor'])->g
     // Patients (read-only for own patients)
     Route::get('/patients',        [\App\Http\Controllers\Doctor\PatientController::class, 'index'])->name('patients');
     Route::get('/patients/{patient}', [\App\Http\Controllers\Doctor\PatientController::class, 'show'])->name('patients.show');
+    // Doctor Schedule
+    Route::get('/schedule',  [\App\Http\Controllers\Doctor\ScheduleController::class, 'index'])->name('schedule');
+    Route::post('/schedule', [\App\Http\Controllers\Doctor\ScheduleController::class, 'update'])->name('schedule.update');
+
 });
 
 // ════════════════════════════════════════════════════════════

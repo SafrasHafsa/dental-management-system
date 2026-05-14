@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Our Services — SmileCare Dental Clinic')
+@section('title', 'Our Services — City Dental Surgery Dental Clinic')
 @section('description', 'Explore our comprehensive range of dental services including preventive care, cosmetic dentistry, orthodontics, and more.')
 
 @section('content')

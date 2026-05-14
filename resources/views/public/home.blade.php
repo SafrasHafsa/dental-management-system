@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'SmileCare Dental Clinic — Your Smile, Our Priority')
+@section('title', 'City Dental Surgery Dental Clinic — Your Smile, Our Priority')
 @section('description', 'Professional dental care for the whole family in Manila. Book your appointment online today.')
 
 @section('content')
@@ -145,7 +145,7 @@
 <section class="bg-primary-600 py-16">
     <div class="max-w-3xl mx-auto text-center px-4">
         <h2 class="text-3xl font-bold text-white mb-4">Ready for a Brighter Smile?</h2>
-        <p class="text-primary-100 mb-8">Join thousands of satisfied patients who trust SmileCare for their dental health.</p>
+        <p class="text-primary-100 mb-8">Join thousands of satisfied patients who trust City Dental Surgery for their dental health.</p>
         <a href="{{ route('book.index') }}"
            class="inline-block bg-white text-primary-700 px-8 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-colors shadow">
             Schedule Your Visit
