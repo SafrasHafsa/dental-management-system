@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\Staff;
-
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Invoice;
 use App\Models\InventoryItem;
 use App\Models\Patient;
 use Illuminate\View\View;
-
 class DashboardController extends Controller
 {
     public function index(): View
@@ -23,6 +20,9 @@ class DashboardController extends Controller
             'invoices_unpaid'     => Invoice::whereIn('status', ['sent', 'partial', 'overdue'])->count(),
             'low_stock_items'     => InventoryItem::whereColumn('current_stock', '<=', 'minimum_stock')
                 ->where('is_active', true)->count(),
+            'unbilled_completed'  => Appointment::where('status', 'completed')
+                ->doesntHave('invoice')
+                ->count(),
         ];
 
         $pendingAppointments = Appointment::with(['patient', 'doctorProfile.user', 'service'])
@@ -38,6 +38,18 @@ class DashboardController extends Controller
             ->orderBy('start_time')
             ->get();
 
-        return view('staff.dashboard', compact('stats', 'pendingAppointments', 'todayAppointments'));
+        $unbilledAppointments = Appointment::with(['patient', 'doctorProfile.user', 'service'])
+            ->where('status', 'completed')
+            ->doesntHave('invoice')
+            ->orderByDesc('appointment_date')
+            ->take(10)
+            ->get();
+
+        return view('staff.dashboard', compact(
+            'stats',
+            'pendingAppointments',
+            'todayAppointments',
+            'unbilledAppointments'
+        ));
     }
 }

@@ -27,7 +27,7 @@ class InvoiceController extends Controller
     public function show(Invoice $invoice): View
     {
         abort_if($invoice->appointment->patient_id !== Auth::user()->patient?->id, 403);
-        $invoice->load(['appointment.doctor.user', 'appointment.service', 'payments']);
+        $invoice->load(['appointment.doctorProfile.user', 'appointment.service', 'payments']);
 
         return view('patient.invoice-show', compact('invoice'));
     }
@@ -39,7 +39,7 @@ class InvoiceController extends Controller
 
         $pdf = Pdf::loadView('pdf.invoice', [
             'invoice'       => $invoice,
-            'clinicName'    => ClinicSetting::get('clinic_name', 'SmileCare Dental Clinic'),
+            'clinicName'    => ClinicSetting::get('clinic_name', 'City Dental Surgery'),
             'clinicAddress' => ClinicSetting::get('clinic_address', ''),
             'clinicPhone'   => ClinicSetting::get('clinic_phone', ''),
             'clinicEmail'   => ClinicSetting::get('clinic_email', ''),

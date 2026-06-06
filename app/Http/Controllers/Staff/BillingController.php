@@ -113,7 +113,7 @@ class BillingController extends Controller
     public function print(Invoice $invoice): View
     {
         $invoice->load(['appointment.patient', 'appointment.doctorProfile.user', 'appointment.service', 'payments']);
-        $clinicName    = ClinicSetting::get('clinic_name', 'SmileCare Dental Clinic');
+        $clinicName    = ClinicSetting::get('clinic_name', 'City Dental Surgery');
         $clinicAddress = ClinicSetting::get('clinic_address', '');
         $clinicPhone   = ClinicSetting::get('clinic_phone', '');
         $clinicEmail   = ClinicSetting::get('clinic_email', '');
@@ -127,7 +127,7 @@ class BillingController extends Controller
 
         $pdf = Pdf::loadView('pdf.invoice', [
             'invoice'       => $invoice,
-            'clinicName'    => ClinicSetting::get('clinic_name', 'SmileCare Dental Clinic'),
+            'clinicName'    => ClinicSetting::get('clinic_name', 'City Dental Surgery'),
             'clinicAddress' => ClinicSetting::get('clinic_address', ''),
             'clinicPhone'   => ClinicSetting::get('clinic_phone', ''),
             'clinicEmail'   => ClinicSetting::get('clinic_email', ''),

@@ -57,7 +57,7 @@ class BookingController extends Controller
             ->map(fn($t) => substr($t, 0, 5))
             ->toArray();
 
-        while ($start->lt($end->subMinutes($duration - 1))) {
+        while ($start->lt($end)) {
             $time = $start->format('H:i');
             $slots[] = [
                 'time'      => $time,
@@ -101,8 +101,24 @@ class BookingController extends Controller
                 );
                 if (! $user->patient) {
                     $user->roles()->syncWithoutDetaching([\App\Models\Role::where('name', 'patient')->first()->id]);
+                    
+                    // Generate unique patient number
+                    $lastPatient = \App\Models\Patient::withTrashed()
+                        ->orderByDesc('created_at')
+                        ->first();
+                    $nextNumber  = $lastPatient
+                        ? (intval(substr($lastPatient->patient_number, -5)) + 1)
+                        : 1;
+                    $patientNumber = 'PT-' . date('Y') . '-' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+
+                    // Make sure it's unique
+                    while (\App\Models\Patient::withTrashed()->where('patient_number', $patientNumber)->exists()) {
+                        $nextNumber++;
+                        $patientNumber = 'PT-' . date('Y') . '-' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+                    }
+
                     $user->patient()->create([
-                        'patient_number' => 'PT-' . date('Y') . '-' . str_pad(\App\Models\Patient::withTrashed()->count() + 1, 5, '0', STR_PAD_LEFT),
+                        'patient_number' => $patientNumber,
                         'first_name'     => $request->first_name,
                         'last_name'      => $request->last_name,
                     ]);

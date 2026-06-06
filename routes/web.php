@@ -23,6 +23,7 @@ Route::get('/contact',   [HomeController::class, 'contact'])->name('contact');
 Route::prefix('book')->name('book.')->group(function () {
     Route::get('/',           [\App\Http\Controllers\Public\BookingController::class, 'index'])->name('index');
     Route::get('/slots',      [\App\Http\Controllers\Public\BookingController::class, 'slots'])->name('slots');
+    Route::get('/available-days',[\App\Http\Controllers\Public\BookingController::class, 'availableDays'])->name('available-days');
     Route::post('/',          [\App\Http\Controllers\Public\BookingController::class, 'store'])->name('store');
     Route::get('/confirm/{appointment}', [\App\Http\Controllers\Public\BookingController::class, 'confirm'])->name('confirm');
 });

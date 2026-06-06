@@ -25,7 +25,7 @@
 </div>
 
 {{-- Stat cards --}}
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
 
     <div class="bg-amber-50 rounded-2xl p-5 border border-amber-100 shadow-sm">
         <p class="text-sm text-amber-600 mb-3">Pending Approvals</p>
@@ -48,6 +48,19 @@
         </div>
     </div>
 
+    {{-- Pending Billing Card --}}
+    <div class="bg-purple-50 rounded-2xl p-5 border border-purple-100 shadow-sm">
+        <p class="text-sm text-purple-600 mb-3">Pending Billing</p>
+        <p class="text-3xl font-bold text-purple-900">{{ $stats['unbilled_completed'] }}</p>
+        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-purple-100">
+            @if($stats['unbilled_completed'] > 0)
+                <span class="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full">Needs invoicing</span>
+            @else
+                <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">All billed</span>
+            @endif
+        </div>
+    </div>
+
     <div class="bg-red-50 rounded-2xl p-5 border border-red-100 shadow-sm">
         <p class="text-sm text-red-600 mb-3">Low Stock Items</p>
         <p class="text-3xl font-bold text-red-900">{{ $stats['low_stock_items'] }}</p>
@@ -62,8 +75,8 @@
 
 </div>
 
-{{-- Two columns: pending approvals + today schedule --}}
-<div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+{{-- Three columns: pending approvals + today schedule + pending billing --}}
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-5">
 
     {{-- Pending Approvals --}}
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
@@ -130,6 +143,37 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
             <p class="text-sm">No appointments scheduled today.</p>
+        </div>
+        @endforelse
+    </div>
+
+    {{-- Pending Billing --}}
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <h3 class="font-semibold text-gray-900">Pending Billing</h3>
+            <a href="{{ route('staff.billing') }}" class="text-sm text-primary-600 hover:underline font-medium">View All</a>
+        </div>
+        @forelse($unbilledAppointments as $appt)
+        <div class="flex items-center justify-between px-6 py-3.5 {{ !$loop->last ? 'border-b border-gray-50' : '' }} hover:bg-gray-50 transition-colors">
+            <div class="min-w-0 flex-1">
+                <p class="text-sm font-medium text-gray-900 truncate">{{ $appt->patient->fullName() }}</p>
+                <p class="text-xs text-gray-400 mt-0.5">
+                    {{ $appt->appointment_date->format('M d') }} &middot;
+                    Dr. {{ $appt->doctorProfile->user->name }} &middot;
+                    {{ $appt->service?->name ?? 'General' }}
+                </p>
+            </div>
+            <a href="{{ route('staff.billing.create', $appt) }}"
+               class="ml-3 flex-shrink-0 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-lg transition-colors">
+                Create Invoice
+            </a>
+        </div>
+        @empty
+        <div class="text-center py-10 text-gray-400">
+            <svg class="w-8 h-8 mx-auto mb-2 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-sm">All appointments are billed.</p>
         </div>
         @endforelse
     </div>
