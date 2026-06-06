@@ -221,7 +221,8 @@
                 <select name="payment_method" x-model="method" required
                         class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white">
                     <option value="cash">Cash</option>
-                    <option value="card">Card</option>
+                    <option value="credit_card" disabled class="text-gray-300">Credit Card</option>
+                    <option value="debit_card" disabled class="text-gray-300">Debit Card</option>
                     <option value="bank_transfer">Bank Transfer</option>
                     <option value="insurance">Insurance</option>
                     <option value="other">Other</option>
