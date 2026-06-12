@@ -112,8 +112,7 @@
                     <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
-                    <input type="text" placeholder="Search..." class="bg-transparent text-sm text-gray-600 outline-none w-full placeholder-gray-400">
-                </div>
+                    <input type="text" id="global-search" placeholder="Search..." class="bg-transparent text-sm text-gray-600 outline-none w-full placeholder-gray-400">
             </div>
 
             <div class="flex items-center gap-2">
@@ -181,12 +180,19 @@
 <script>
 // Global DataTable initializer
 window.initDT = function(selector, opts) {
-    return $(selector).DataTable(Object.assign({
+    const table = $(selector).DataTable(Object.assign({
         pageLength: 15,
         lengthMenu: [[10,15,25,50,100],['10','15','25','50','100']],
-        language: {search:'', searchPlaceholder:'Search\u2026', lengthMenu:'Show _MENU_', info:'_START_\u2013_END_ of _TOTAL_'},
+        language: {search:'', searchPlaceholder:'Search…', lengthMenu:'Show _MENU_', info:'_START_–_END_ of _TOTAL_'},
         dom: '<"dt-toolbar"lf>t<"dt-footer"ip>',
     }, opts || {}));
+
+    // Connect global search bar to DataTable
+    $('#global-search').off('keyup').on('keyup', function() {
+        table.search(this.value).draw();
+    });
+
+    return table;
 };
 </script>
 @stack('scripts')
