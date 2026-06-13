@@ -41,6 +41,9 @@ Alpine.data('sidebar', () => ({
 // ─── Generic CRUD modal (used by most list pages) ──────────
 Alpine.data('crudModal', (cfg = {}) => ({
     showModal: false,
+    showDeleteModal: false,
+    _deleteId: null,
+    _deleteUrl: null,
     mode: 'create',
     form: {},
     errors: {},
@@ -90,15 +93,21 @@ Alpine.data('crudModal', (cfg = {}) => ({
         finally { this.loading = false }
     },
 
-    async del(id, deleteUrl) {
-        if (!confirm('Are you sure you want to delete this?')) return
-        const res = await fetch(deleteUrl + '/' + id, {
+    del(id, deleteUrl) {
+        this._deleteId = id;
+        this._deleteUrl = deleteUrl;
+        this.showDeleteModal = true;
+    },
+
+    async confirmDelete() {
+        const res = await fetch(this._deleteUrl + '/' + this._deleteId, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Accept': 'application/json',
             },
         })
+        this.showDeleteModal = false;
         if (res.ok) location.reload()
         else alert('Could not delete. It may be in use.')
     },

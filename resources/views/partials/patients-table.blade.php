@@ -61,7 +61,7 @@
                             </a>
                             <button
                                 @click="openEdit({
-                                    id: {{ $patient->id }},
+                                    id: '{{ $patient->id }}',
                                     first_name: @js($patient->first_name),
                                     last_name: @js($patient->last_name),
                                     date_of_birth: '{{ $patient->date_of_birth?->format('Y-m-d') ?? '' }}',
@@ -74,7 +74,7 @@
                                 Edit
                             </button>
                             <button
-                                @click="del({{ $patient->id }}, '{{ $deleteUrl }}')"
+                                @click="del('{{ $patient->id }}', '{{ $deleteUrl }}')"
                                 class="text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
                                 Delete
                             </button>
@@ -164,6 +164,48 @@
                 </button>
             </div>
         </form>
+    </div>
+</div>
+{{-- Delete Confirmation Modal --}}
+<div x-show="showDeleteModal" x-cloak
+     class="fixed inset-0 z-50 flex items-center justify-center p-4"
+     x-transition:enter="transition ease-out duration-200"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0">
+    <div class="absolute inset-0 bg-black/50" @click="showDeleteModal = false"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm mx-auto p-6"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100">
+        {{-- Icon --}}
+        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+        </div>
+        {{-- Content --}}
+        <h3 class="text-lg font-bold text-gray-900 text-center mb-2">Delete Patient</h3>
+        <p class="text-sm text-gray-500 text-center mb-6">
+            Are you sure you want to delete this patient?
+            <br>This action <span class="font-semibold text-red-600">cannot be undone</span>.
+        </p>
+        {{-- Buttons --}}
+        <div class="flex gap-3">
+            <button type="button"
+                    @click="showDeleteModal = false"
+                    class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">
+                Cancel
+            </button>
+            <button type="button"
+                    @click="confirmDelete()"
+                    class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors">
+                Yes, Delete
+            </button>
+        </div>
     </div>
 </div>
 

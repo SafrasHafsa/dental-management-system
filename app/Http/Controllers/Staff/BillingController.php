@@ -64,6 +64,8 @@ class BillingController extends Controller
             'notes'           => $request->notes,
         ]);
 
+        $appointment->load(['patient.user', 'invoice']);
+        \App\Services\NotificationService::invoiceCreated($appointment);
         return redirect()->route('staff.billing.show', $invoice)
             ->with('success', 'Invoice created successfully.');
     }
