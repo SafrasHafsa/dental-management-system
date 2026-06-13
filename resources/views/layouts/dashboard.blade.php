@@ -69,7 +69,16 @@
 
         {{-- User profile at bottom --}}
         <div class="flex-shrink-0 border-t border-white/5 p-3">
-            <div class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer">
+            @if(auth()->user()->isPatient())
+            <a href="{{ route('patient.profile') }}"
+            @elseif(auth()->user()->isDoctor())
+            <a href="{{ route('doctor.dashboard') }}"
+            @elseif(auth()->user()->isStaff())
+            <a href="{{ route('staff.dashboard') }}"
+            @else
+            <a href="{{ route('admin.dashboard') }}"
+            @endif
+               class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/5 transition-colors">
                 <img src="{{ auth()->user()->avatarUrl() }}" alt="avatar"
                      class="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-2 ring-white/10">
                 <div class="flex-1 min-w-0">
@@ -78,17 +87,7 @@
                         {{ auth()->user()->roles->first()?->display_name ?? 'User' }}
                     </p>
                 </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" title="Sign Out"
-                            class="p-1.5 rounded-lg text-gray-600 hover:text-red-400 hover:bg-white/10 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                    </button>
-                </form>
-            </div>
+            </a>
         </div>
     </aside>
 
@@ -112,7 +111,9 @@
                     <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
-                    <input type="text" id="global-search" placeholder="Search..." class="bg-transparent text-sm text-gray-600 outline-none w-full placeholder-gray-400">
+                    
+                <input type="text" id="global-search" placeholder="Search..." class="bg-transparent text-sm text-gray-600 outline-none w-full placeholder-gray-400">
+                </div>
             </div>
 
             <div class="flex items-center gap-2">
@@ -133,9 +134,52 @@
                     @endif
                 </button>
 
-                {{-- Avatar --}}
-                <img src="{{ auth()->user()->avatarUrl() }}" alt="avatar"
-                     class="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 ml-1">
+                {{-- Avatar dropdown --}}
+                <div class="relative ml-1" x-data="{ open: false }">
+                    <button @click="open = !open" class="focus:outline-none">
+                        <img src="{{ auth()->user()->avatarUrl() }}" alt="avatar"
+                             class="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 hover:ring-primary-400 transition-all cursor-pointer">
+                    </button>
+                    <div x-show="open"
+                         @click.outside="open = false"
+                         x-cloak
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-100"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute right-0 top-10 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name }}</p>
+                            <p class="text-xs text-gray-400 truncate">{{ auth()->user()->email }}</p>
+                        </div>
+                        <div class="py-1">
+                            @if(auth()->user()->isPatient())
+                            <a href="{{ route('patient.profile') }}"
+                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                My Profile
+                            </a>
+                            @endif
+                            <div class="border-t border-gray-100 mt-1 pt-1">
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                            class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                        </svg>
+                                        Sign Out
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </header>
 

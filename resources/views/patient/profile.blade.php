@@ -30,8 +30,21 @@
 
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
     <div class="xl:col-span-2">
-        <form method="POST" action="{{ route('patient.profile.update') }}">
+        <form method="POST" action="{{ route('patient.profile.update') }}" enctype="multipart/form-data">
             @csrf @method('PUT')
+            {{-- Profile Picture --}}
+            <div class="card p-6 mb-5">
+                <h3 class="font-semibold text-gray-900 mb-4">Profile Picture</h3>
+                <div class="flex items-center gap-5">
+                    <img src="{{ auth()->user()->avatarUrl() }}" alt="avatar"
+                        class="w-20 h-20 rounded-full object-cover ring-4 ring-gray-100">
+                    <div>
+                        <input type="file" name="avatar" accept="image/*" id="avatar-input"
+                            class="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                        <p class="text-xs text-gray-400 mt-2">JPG, PNG or GIF. Max 2MB.</p>
+                    </div>
+                </div>
+            </div>
 
             {{-- Personal info --}}
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-5">
