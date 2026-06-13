@@ -67,7 +67,7 @@ class AppointmentController extends Controller
         $appointment->load(['patient', 'doctorProfile.user', 'service', 'invoice']);
         return view('staff.appointment-show', compact('appointment'));
     }
-
+   
     public function approve(Appointment $appointment): RedirectResponse
     {
         $appointment->update([
@@ -75,12 +75,16 @@ class AppointmentController extends Controller
             'approved_by' => auth()->id(),
             'approved_at' => now(),
         ]);
+        $appointment->load(['patient.user', 'doctorProfile.user', 'service']);
+        \App\Services\NotificationService::appointmentApproved($appointment);
         return back()->with('success', 'Appointment confirmed successfully.');
     }
 
     public function cancel(Appointment $appointment): RedirectResponse
     {
         $appointment->update(['status' => 'cancelled']);
+        $appointment->load(['patient.user', 'doctorProfile.user', 'service']);
+        \App\Services\NotificationService::appointmentCancelled($appointment);
         return back()->with('success', 'Appointment cancelled.');
     }
 

@@ -167,3 +167,18 @@ Route::prefix('portal')->name('patient.')->middleware(['auth', 'role:patient'])-
     Route::get('/profile',      [\App\Http\Controllers\Patient\ProfileController::class, 'edit'])->name('profile');
     Route::put('/profile',      [\App\Http\Controllers\Patient\ProfileController::class, 'update'])->name('profile.update');
 });
+
+// ════════════════════════════════════════════════════════════
+// NOTIFICATIONS
+// ════════════════════════════════════════════════════════════
+Route::middleware('auth')->group(function () {
+    Route::post('/notifications/{id}/read', function ($id) {
+        auth()->user()->notifications()->where('id', $id)->update(['read_at' => now()]);
+        return response()->json(['success' => true]);
+    })->name('notifications.read');
+
+    Route::post('/notifications/read-all', function () {
+        auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+        return back();
+    })->name('notifications.read-all');
+});

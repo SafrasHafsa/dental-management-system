@@ -148,6 +148,7 @@ class BookingController extends Controller
                 'source'             => 'online',
                 'notes'              => $request->notes,
             ]);
+            \App\Services\NotificationService::appointmentBooked($appointment);
         });
 
         return redirect()->route('book.confirm', $appointment)
