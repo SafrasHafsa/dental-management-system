@@ -44,10 +44,18 @@ class BookingController extends Controller
         }
 
         // Generate slots
-        $slots  = [];
-        $start  = \Carbon\Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->start_time);
-        $end    = \Carbon\Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->end_time);
+        $slots    = [];
+        $start    = \Carbon\Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->start_time);
+        $end      = \Carbon\Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->end_time);
         $duration = $schedule->slot_duration_minutes;
+
+        // If booking for today, skip slots that have already passed
+        if ($date->isToday()) {
+            $now = \Carbon\Carbon::now(\config('app.timezone'))->addMinutes(30);
+            while ($start->lt($now)) {
+                $start->addMinutes($duration);
+            }
+        }
 
         // Get already-booked slots
         $booked = Appointment::where('doctor_profile_id', $doctor->id)

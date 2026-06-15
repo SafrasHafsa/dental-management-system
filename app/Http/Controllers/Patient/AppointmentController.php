@@ -14,7 +14,7 @@ class AppointmentController extends Controller
     public function index(): View
     {
         $appointments = Appointment::where('patient_id', Auth::user()->patient?->id)
-            ->with(['doctor.user', 'service'])
+            ->with(['doctorProfile.user', 'service'])
             ->latest('appointment_date')
             ->paginate(15);
 

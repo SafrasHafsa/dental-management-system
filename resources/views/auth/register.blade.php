@@ -16,14 +16,14 @@
             <label for="first_name" class="form-label">First Name</label>
             <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}"
                    class="form-input @error('first_name') border-red-400 @enderror"
-                   placeholder="Juan" required autofocus>
+                   placeholder="Kamal" required autofocus>
             @error('first_name') <p class="form-error">{{ $message }}</p> @enderror
         </div>
         <div class="form-group">
             <label for="last_name" class="form-label">Last Name</label>
             <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}"
                    class="form-input @error('last_name') border-red-400 @enderror"
-                   placeholder="dela Cruz" required>
+                   placeholder="Perera" required>
             @error('last_name') <p class="form-error">{{ $message }}</p> @enderror
         </div>
     </div>
@@ -40,7 +40,7 @@
         <label for="phone" class="form-label">Phone Number</label>
         <input id="phone" type="tel" name="phone" value="{{ old('phone') }}"
                class="form-input @error('phone') border-red-400 @enderror"
-               placeholder="+63 9XX XXX XXXX" required>
+               placeholder="+94 7XX XXX XXX" required>
         @error('phone') <p class="form-error">{{ $message }}</p> @enderror
     </div>
 
