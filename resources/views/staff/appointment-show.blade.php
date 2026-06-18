@@ -44,6 +44,8 @@
             </button>
         </form>
         @endif
+        
+        
         @if(!$appointment->isCancelled() && !$appointment->isCompleted())
         <button @click="showReschedule = true"
                 class="text-sm font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 px-4 py-2 rounded-xl transition-colors">

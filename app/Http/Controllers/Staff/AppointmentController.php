@@ -87,6 +87,7 @@ class AppointmentController extends Controller
         \App\Services\NotificationService::appointmentCancelled($appointment);
         return back()->with('success', 'Appointment cancelled.');
     }
+  
 
     public function reschedule(Request $request, Appointment $appointment): RedirectResponse
     {

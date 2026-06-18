@@ -100,6 +100,7 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff,admin'])
     Route::patch('/appointments/{appointment}/cancel',     [\App\Http\Controllers\Staff\AppointmentController::class, 'cancel'])->name('appointments.cancel');
     Route::patch('/appointments/{appointment}/reschedule', [\App\Http\Controllers\Staff\AppointmentController::class, 'reschedule'])->name('appointments.reschedule');
 
+
     // Patients
     Route::resource('patients', \App\Http\Controllers\Staff\PatientController::class)
         ->names(['index' => 'patients', 'create' => 'patients.create', 'store' => 'patients.store',

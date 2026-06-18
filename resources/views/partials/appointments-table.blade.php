@@ -58,11 +58,11 @@
                     </td>
                     <td class="px-6 py-3.5 text-gray-600">Dr. {{ $appt->doctorProfile->user->name }}</td>
                     <td class="px-6 py-3.5 text-gray-500">{{ $appt->service?->name ?? '—' }}</td>
-                    <td class="px-6 py-3.5">
+                    <td class="px-6 py-3.5" data-order="{{ $appt->appointment_date->format('Y-m-d') }}">
                         <p class="font-medium text-gray-700">{{ $appt->appointment_date->format('M d, Y') }}</p>
                         <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($appt->start_time)->format('g:i A') }}</p>
                     </td>
-                    <td class="px-6 py-3.5">
+                    <td class="px-6 py-3.5" data-search="{{ $appt->status }}">
                         <span class="{{ $appt->statusBadgeClass() }}">{{ $appt->statusLabel() }}</span>
                     </td>
                     <td class="px-6 py-3.5">
@@ -203,7 +203,21 @@
 <script>
 var apptTable;
 $(document).ready(function () {
-    apptTable = initDT('#appts-dt', { order: [[3,'desc']] });
+    apptTable = initDT('#appts-dt', {
+        order: [[3,'desc']],
+        columnDefs: [{
+            targets: 4,
+            render: function(data, type, row) {
+                if (type === 'filter') {
+                    var tmp = document.createElement('div');
+                    tmp.innerHTML = data;
+                    var hidden = tmp.querySelector('.hidden');
+                    return hidden ? hidden.textContent.trim() : data;
+                }
+                return data;
+            }
+        }]
+    });
 });
 
 function filterStatus(status) {
@@ -257,3 +271,4 @@ document.addEventListener('alpine:init', () => {
 });
 </script>
 @endpush
+
