@@ -5,9 +5,9 @@
     <div class="mb-4">
         <p class="px-3 mb-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">My Clinic</p>
         <x-nav-item route="doctor.dashboard"     icon="home"     label="Dashboard" />
-        <x-nav-item route="doctor.appointments"  icon="calendar" label="My Appointments" />
-        <x-nav-item route="doctor.schedule"      icon="clock"    label="My Schedule" />
+        <x-nav-item route="doctor.appointments"  icon="calendar" label="My Schedule" />
         <x-nav-item route="doctor.patients"      icon="users"    label="My Patients" />
+        <x-nav-item route="doctor.schedule"      icon="clock"    label="My Availability" />
     </div>
 @endsection
 

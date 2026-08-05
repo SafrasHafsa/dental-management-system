@@ -83,7 +83,7 @@
                         <div class="flex items-center gap-2">
                             <button
                                 @click="openEdit({
-                                    id: {{ $user->id }},
+                                    id: '{{ $user->id }}',
                                     name: @js($user->name),
                                     email: @js($user->email),
                                     phone: @js($user->phone ?? ''),
@@ -96,7 +96,7 @@
                             </button>
                             @if($user->id !== auth()->id())
                             <button
-                                @click="del({{ $user->id }}, '{{ url('admin/users') }}')"
+                                @click="del('{{ $user->id }}', '{{ url('admin/users') }}')"
                                 class="text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
                                 Delete
                             </button>

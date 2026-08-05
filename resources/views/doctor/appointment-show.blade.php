@@ -7,7 +7,7 @@
         <x-nav-item route="doctor.dashboard"    icon="home"     label="Dashboard" />
         <x-nav-item route="doctor.appointments" icon="calendar" label="My Schedule" />
         <x-nav-item route="doctor.patients"     icon="users"    label="My Patients" />
-        <x-nav-item route="doctor.schedule" icon="clock" label="My Schedule" />
+        <x-nav-item route="doctor.schedule" icon="clock" label="My Availability" />
     </div>
 @endsection
 
