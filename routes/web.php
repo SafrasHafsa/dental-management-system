@@ -11,9 +11,9 @@ use App\Http\Controllers\Doctor\DashboardController as DoctorDashboard;
 use App\Http\Controllers\Patient\DashboardController as PatientDashboard;
 use Illuminate\Support\Facades\Route;
 
-// ════════════════════════════════════════════════════════════
+
 // PUBLIC WEBSITE
-// ════════════════════════════════════════════════════════════
+
 Route::get('/',          [HomeController::class, 'index'])->name('home');
 Route::get('/services',  [HomeController::class, 'services'])->name('services');
 Route::get('/about',     [HomeController::class, 'about'])->name('about');
@@ -28,9 +28,9 @@ Route::prefix('book')->name('book.')->group(function () {
     Route::get('/confirm/{appointment}', [\App\Http\Controllers\Public\BookingController::class, 'confirm'])->name('confirm');
 });
 
-// ════════════════════════════════════════════════════════════
+// 
 // AUTHENTICATION
-// ════════════════════════════════════════════════════════════
+// 
 Route::middleware('guest')->group(function () {
     Route::get('/login',    [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login',   [LoginController::class, 'login']);
@@ -46,9 +46,9 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-// ════════════════════════════════════════════════════════════
+// ═
 // ADMIN PANEL
-// ════════════════════════════════════════════════════════════
+// ═
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
 
@@ -86,9 +86,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('/settings',     [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
 });
 
-// ════════════════════════════════════════════════════════════
+// 
 // STAFF PANEL
-// ════════════════════════════════════════════════════════════
+// 
 Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('/dashboard', [StaffDashboard::class, 'index'])->name('dashboard');
 
@@ -124,9 +124,9 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff,admin'])
                  'show' => 'inventory.items.show', 'edit' => 'inventory.items.edit', 'update' => 'inventory.items.update', 'destroy' => 'inventory.items.destroy']);
 });
 
-// ════════════════════════════════════════════════════════════
+// 
 // DOCTOR PANEL
-// ════════════════════════════════════════════════════════════
+// 
 Route::prefix('doctor')->name('doctor.')->middleware(['auth', 'role:doctor'])->group(function () {
     Route::get('/dashboard', [DoctorDashboard::class, 'index'])->name('dashboard');
 
@@ -149,9 +149,9 @@ Route::prefix('doctor')->name('doctor.')->middleware(['auth', 'role:doctor'])->g
 
 });
 
-// ════════════════════════════════════════════════════════════
+// 
 // PATIENT PORTAL
-// ════════════════════════════════════════════════════════════
+// 
 Route::prefix('portal')->name('patient.')->middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/dashboard',    [PatientDashboard::class, 'index'])->name('dashboard');
 
@@ -169,9 +169,9 @@ Route::prefix('portal')->name('patient.')->middleware(['auth', 'role:patient'])-
     Route::put('/profile',      [\App\Http\Controllers\Patient\ProfileController::class, 'update'])->name('profile.update');
 });
 
-// ════════════════════════════════════════════════════════════
+// 
 // NOTIFICATIONS
-// ════════════════════════════════════════════════════════════
+// 
 Route::middleware('auth')->group(function () {
     Route::post('/notifications/{id}/read', function ($id) {
         auth()->user()->notifications()->where('id', $id)->update(['read_at' => now()]);

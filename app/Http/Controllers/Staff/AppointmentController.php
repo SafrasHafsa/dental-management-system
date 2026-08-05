@@ -43,6 +43,20 @@ class AppointmentController extends Controller
         $duration = $service?->duration_minutes ?? 30;
         $start    = \Carbon\Carbon::parse($data['appointment_date'] . ' ' . $data['start_time']);
 
+        // Double-booking check
+        $conflict = Appointment::where('doctor_profile_id', $data['doctor_profile_id'])
+            ->whereDate('appointment_date', $data['appointment_date'])
+            ->whereNotIn('status', ['cancelled', 'no_show'])
+            ->where('start_time', $start->format('H:i:s'))
+            ->exists();
+
+        if ($conflict) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This time slot is already booked for the selected doctor. Please choose a different time.'
+            ], 422);
+        }
+
         $number = 'APT-' . date('Y') . '-' . str_pad(Appointment::withTrashed()->count() + 1, 5, '0', STR_PAD_LEFT);
 
         Appointment::create([

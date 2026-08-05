@@ -17,7 +17,7 @@ class AdminUserSeeder extends Seeder
             [
                 'name'     => 'System Admin',
                 'password' => Hash::make('Admin@1234'),
-                'phone'    => '+63900000001',
+                'phone'    => '+772628911',
                 'is_active'=> true,
             ]
         );
@@ -25,11 +25,11 @@ class AdminUserSeeder extends Seeder
 
         // ─── Sample Doctor ────────────────────────────────────
         $doctor = User::firstOrCreate(
-            ['email' => 'dr.smith@dental.com'],
+            ['email' => 'dr.Sajith@dental.com'],
             [
-                'name'     => 'James Smith',
+                'name'     => 'Sajith Irfan',
                 'password' => Hash::make('Doctor@1234'),
-                'phone'    => '+63900000002',
+                'phone'    => '+772826922',
                 'is_active'=> true,
             ]
         );
@@ -47,9 +47,9 @@ class AdminUserSeeder extends Seeder
         $staff = User::firstOrCreate(
             ['email' => 'staff@dental.com'],
             [
-                'name'     => 'Maria Santos',
+                'name'     => 'Hafsa Aman',
                 'password' => Hash::make('Staff@1234'),
-                'phone'    => '+63900000003',
+                'phone'    => '+767141703',
                 'is_active'=> true,
             ]
         );
@@ -59,9 +59,9 @@ class AdminUserSeeder extends Seeder
         $patientUser = User::firstOrCreate(
             ['email' => 'patient@dental.com'],
             [
-                'name'     => 'Juan dela Cruz',
+                'name'     => 'Aamina Safras',
                 'password' => Hash::make('Patient@1234'),
-                'phone'    => '+63900000004',
+                'phone'    => '+779686785',
                 'is_active'=> true,
             ]
         );
@@ -70,8 +70,8 @@ class AdminUserSeeder extends Seeder
         if (! $patientUser->patient) {
             $patientUser->patient()->create([
                 'patient_number' => 'PT-2024-00001',
-                'first_name'     => 'Juan',
-                'last_name'      => 'dela Cruz',
+                'first_name'     => 'Aamina',
+                'last_name'      => 'Safras',
                 'date_of_birth'  => '1990-05-15',
                 'gender'         => 'male',
             ]);
@@ -82,7 +82,7 @@ class AdminUserSeeder extends Seeder
             ['Role', 'Email', 'Password'],
             [
                 ['Admin',   'admin@dental.com',      'Admin@1234'],
-                ['Doctor',  'dr.smith@dental.com',   'Doctor@1234'],
+                ['Doctor',  'dr.sajith@dental.com',   'Doctor@1234'],
                 ['Staff',   'staff@dental.com',      'Staff@1234'],
                 ['Patient', 'patient@dental.com',    'Patient@1234'],
             ]
