@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 @section('title', $patient->first_name . ' ' . $patient->last_name)
+@section('datatable', true)
 
 @section('sidebar-nav')
     <div class="mb-4">

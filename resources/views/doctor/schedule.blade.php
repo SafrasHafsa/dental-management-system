@@ -1,6 +1,8 @@
+
+Doctor schedule.blade · PHP
 @extends('layouts.dashboard')
 @section('title', 'My Schedule')
-
+ 
 @section('sidebar-nav')
     <div class="mb-4">
         <p class="px-3 mb-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">My Clinic</p>
@@ -10,7 +12,7 @@
         <x-nav-item route="doctor.schedule"      icon="clock"    label="My Availability" />
     </div>
 @endsection
-
+ 
 @section('content')
 <div class="flex items-center justify-between mb-6">
     <div>
@@ -18,11 +20,11 @@
         <p class="text-sm text-gray-500 mt-0.5">Set your working days and available appointment slots</p>
     </div>
 </div>
-
+ 
 @if(session('success'))
     <div class="alert-success mb-6">{{ session('success') }}</div>
 @endif
-
+ 
 @if($errors->any())
     <div class="alert-error mb-6">
         <ul class="list-disc list-inside text-sm space-y-1">
@@ -32,25 +34,31 @@
         </ul>
     </div>
 @endif
-
+ 
 <form method="POST" action="{{ route('doctor.schedule.update') }}" x-data="scheduleForm()">
     @csrf
-
+ 
     {{-- Working Hours --}}
     <div class="card p-6 mb-5">
         <h2 class="text-base font-semibold text-gray-900 mb-1">Working Hours</h2>
-        <p class="text-sm text-gray-400 mb-5">These hours apply to all your active working days.</p>
+        <p class="text-sm text-gray-400 mb-1">These hours apply to all your active working days.</p>
+        <p class="text-xs text-gray-400 mb-5">
+            Clinic hours: <span class="font-semibold text-gray-600">{{ \Carbon\Carbon::parse($clinicOpen)->format('g:i A') }} – {{ \Carbon\Carbon::parse($clinicClose)->format('g:i A') }}</span>
+            &mdash; your availability must fall within this range.
+        </p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <div>
                 <label class="form-label">Start Time <span class="text-red-500">*</span></label>
                 <input type="time" name="start_time" class="form-input" required
-                       value="{{ old('start_time', $schedules->first()?->start_time ? substr($schedules->first()->start_time, 0, 5) : '08:00') }}">
+                       min="{{ $clinicOpen }}" max="{{ $clinicClose }}"
+                       value="{{ old('start_time', $schedules->first()?->start_time ? substr($schedules->first()->start_time, 0, 5) : $clinicOpen) }}">
                 @error('start_time')<p class="form-error">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label class="form-label">End Time <span class="text-red-500">*</span></label>
                 <input type="time" name="end_time" class="form-input" required
-                       value="{{ old('end_time', $schedules->first()?->end_time ? substr($schedules->first()->end_time, 0, 5) : '17:00') }}">
+                       min="{{ $clinicOpen }}" max="{{ $clinicClose }}"
+                       value="{{ old('end_time', $schedules->first()?->end_time ? substr($schedules->first()->end_time, 0, 5) : $clinicClose) }}">
                 @error('end_time')<p class="form-error">{{ $message }}</p>@enderror
             </div>
             <div>
@@ -67,7 +75,7 @@
             </div>
         </div>
     </div>
-
+ 
     {{-- Available Days --}}
     <div class="card p-6 mb-5">
         <h2 class="text-base font-semibold text-gray-900 mb-1">Available Days</h2>
@@ -91,7 +99,7 @@
             @endforeach
         </div>
     </div>
-
+ 
     {{-- Preview --}}
     <div class="card p-6 mb-6 bg-gray-50">
         <h2 class="text-base font-semibold text-gray-900 mb-3">Schedule Preview</h2>
@@ -100,13 +108,13 @@
             <span class="font-semibold text-gray-700" x-text="previewDays()"></span>
         </p>
     </div>
-
+ 
     <button type="submit" class="btn-primary px-8 py-2.5 text-base">
         Save Schedule
     </button>
 </form>
 @endsection
-
+ 
 @push('scripts')
 <script>
 function scheduleForm() {
@@ -117,7 +125,7 @@ function scheduleForm() {
                 : $schedules->filter(fn($s) => $s->is_active)->keys()->values()->toArray()
         ),
         dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-
+ 
         toggleDay(day) {
             if (this.days.includes(day)) {
                 this.days = this.days.filter(d => d !== day);
@@ -126,7 +134,7 @@ function scheduleForm() {
                 this.days.sort();
             }
         },
-
+ 
         previewDays() {
             if (this.days.length === 0) return 'No days selected';
             return this.days.map(d => this.dayNames[d]).join(', ');
@@ -135,3 +143,4 @@ function scheduleForm() {
 }
 </script>
 @endpush
+ 

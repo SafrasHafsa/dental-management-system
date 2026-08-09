@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 @section('title', 'Billing')
+@section('datatable', true)
 
 @section('sidebar-nav')
     <div class="mb-4">

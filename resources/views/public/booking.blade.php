@@ -130,22 +130,22 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                     <label class="form-label">First Name <span class="text-red-500">*</span></label>
-                    <input type="text" name="first_name" class="form-input" required value="{{ old('first_name') }}" placeholder="Juan">
+                    <input type="text" name="first_name" class="form-input" required value="{{ old('first_name') }}" placeholder="Amal">
                     @error('first_name')<p class="form-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label class="form-label">Last Name <span class="text-red-500">*</span></label>
-                    <input type="text" name="last_name" class="form-input" required value="{{ old('last_name') }}" placeholder="Dela Cruz">
+                    <input type="text" name="last_name" class="form-input" required value="{{ old('last_name') }}" placeholder="Perera">
                     @error('last_name')<p class="form-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label class="form-label">Email Address <span class="text-red-500">*</span></label>
-                    <input type="email" name="email" class="form-input" required value="{{ old('email') }}" placeholder="juan@example.com">
+                    <input type="email" name="email" class="form-input" required value="{{ old('email') }}" placeholder="amal@gmail.com">
                     @error('email')<p class="form-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label class="form-label">Phone Number <span class="text-red-500">*</span></label>
-                    <input type="text" name="phone" class="form-input" required value="{{ old('phone') }}" placeholder="+63 9xx xxx xxxx">
+                    <input type="text" name="phone" class="form-input" required value="{{ old('phone') }}" placeholder="+77 95 85 674">
                     @error('phone')<p class="form-error">{{ $message }}</p>@enderror
                 </div>
             </div>

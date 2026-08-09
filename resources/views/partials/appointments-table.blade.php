@@ -80,14 +80,13 @@
                             </form>
                             @endif
                             @if(isset($canApprove) && $canApprove && !$appt->isCancelled() && !$appt->isCompleted())
-                            <form method="POST" action="{{ route($cancelRoute, $appt) }}"
-                                  x-data="confirmAction('Cancel this appointment?')" class="inline">
+                            <form id="cancel-form-{{ $appt->id }}" method="POST" action="{{ route($cancelRoute, $appt) }}" class="inline">
                                 @csrf @method('PATCH')
-                                <button type="button" @click="confirm($el.closest('form'))"
-                                        class="text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
-                                    Cancel
-                                </button>
                             </form>
+                            <button type="button" @click="confirmCancel('cancel-form-{{ $appt->id }}')"
+                                    class="text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
+                                Cancel
+                            </button>
                             @endif
                         </div>
                     </td>
@@ -116,7 +115,9 @@
         </div>
         <form @submit.prevent="submit()" class="px-6 py-5 space-y-4">
             <div x-show="Object.keys(errors).length > 0" class="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600">
-                Please correct the errors below.
+                <template x-for="(msgs, field) in errors" :key="field">
+                    <p x-text="msgs[0]"></p>
+                </template>
             </div>
 
             <div>
@@ -197,6 +198,26 @@
 </div>
 @endif
 
+{{-- Cancel Confirmation Modal (shared for all rows) --}}
+<div x-show="showCancelModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
+     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    <div class="absolute inset-0 bg-black/50" @click="showCancelModal = false"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm mx-auto"
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+        <div class="px-6 py-5">
+            <h3 class="font-semibold text-gray-900 mb-2">Cancel Appointment</h3>
+            <p class="text-sm text-gray-500">Are you sure you want to cancel this appointment? The patient will be notified.</p>
+        </div>
+        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+            <button type="button" @click="showCancelModal = false"
+                    class="px-4 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">Keep Appointment</button>
+            <button type="button" @click="submitCancel()"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors">Yes, Cancel</button>
+        </div>
+    </div>
+</div>
+
 </div>{{-- end x-data --}}
 
 @push('scripts')
@@ -235,6 +256,8 @@ function filterStatus(status) {
 document.addEventListener('alpine:init', () => {
     Alpine.data('apptModal', (storeUrl) => ({
         showModal: false,
+        showCancelModal: false,
+        cancelTargetId: null,
         form: { patient_id:'', doctor_profile_id:'', service_id:'', appointment_date:'', start_time:'', notes:'' },
         errors: {},
         loading: false,
@@ -246,6 +269,16 @@ document.addEventListener('alpine:init', () => {
             this.showModal = true;
         },
         close() { this.showModal = false; },
+
+        confirmCancel(formId) {
+            this.cancelTargetId = formId;
+            this.showCancelModal = true;
+        },
+        submitCancel() {
+            if (this.cancelTargetId) {
+                document.getElementById(this.cancelTargetId).submit();
+            }
+        },
 
         async submit() {
             this.loading = true;
@@ -271,4 +304,3 @@ document.addEventListener('alpine:init', () => {
 });
 </script>
 @endpush
-

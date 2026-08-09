@@ -15,6 +15,7 @@
 @section('content')
 <div x-data="{
     showReschedule: false,
+    showCancelModal: false,
     date: '{{ $appointment->appointment_date->format('Y-m-d') }}',
     time: '{{ \Carbon\Carbon::parse($appointment->start_time)->format('H:i') }}',
     notes: @js($appointment->notes ?? ''),
@@ -44,21 +45,20 @@
             </button>
         </form>
         @endif
-        
-        
+
+
         @if(!$appointment->isCancelled() && !$appointment->isCompleted())
         <button @click="showReschedule = true"
                 class="text-sm font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 px-4 py-2 rounded-xl transition-colors">
             Reschedule
         </button>
-        <form method="POST" action="{{ route('staff.appointments.cancel', $appointment) }}"
-              x-data="confirmAction('Cancel this appointment?')">
+        <form id="cancel-appointment-form" method="POST" action="{{ route('staff.appointments.cancel', $appointment) }}">
             @csrf @method('PATCH')
-            <button type="button" @click="confirm($el.closest('form'))"
-                    class="text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-xl transition-colors">
-                Cancel
-            </button>
         </form>
+        <button type="button" @click="showCancelModal = true"
+                class="text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-xl transition-colors">
+            Cancel
+        </button>
         @endif
         @if($appointment->isCompleted() && !$appointment->invoice)
         <a href="{{ route('staff.billing.create', $appointment) }}"
@@ -222,6 +222,27 @@
                 </button>
             </div>
         </form>
+    </div>
+</div>
+
+{{-- Cancel Confirmation Modal --}}
+<div x-show="showCancelModal" x-cloak
+     class="fixed inset-0 z-50 flex items-center justify-center p-4"
+     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    <div class="absolute inset-0 bg-black/50" @click="showCancelModal = false"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm mx-auto"
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+        <div class="px-6 py-5">
+            <h3 class="font-semibold text-gray-900 mb-2">Cancel Appointment</h3>
+            <p class="text-sm text-gray-500">Are you sure you want to cancel this appointment? The patient will be notified.</p>
+        </div>
+        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+            <button type="button" @click="showCancelModal = false"
+                    class="px-4 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">Keep Appointment</button>
+            <button type="button" @click="document.getElementById('cancel-appointment-form').submit()"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors">Yes, Cancel</button>
+        </div>
     </div>
 </div>
 

@@ -26,7 +26,7 @@ class ClinicalNoteController extends Controller
         return view('doctor.appointments.notes', compact('appointment', 'note'));
     }
 
-    public function store(Request $request, Appointment $appointment): RedirectResponse
+   public function store(Request $request, Appointment $appointment): RedirectResponse
     {
         $request->validate([
             'chief_complaint' => 'nullable|string|max:1000',
@@ -35,16 +35,15 @@ class ClinicalNoteController extends Controller
             'notes'           => 'nullable|string|max:2000',
         ]);
 
-        // Map view field names → DB column names (SOAP format)
         $appointment->clinicalNotes()->create([
             'doctor_id'       => auth()->id(),
-            'subjective'      => $request->chief_complaint,   // what patient reports
-            'assessment'      => $request->diagnosis,          // doctor's diagnosis
-            'procedures_done' => $request->treatment,          // what was done
-            'plan'            => $request->notes,              // prescriptions / follow-up
+            'subjective'      => $request->chief_complaint,
+            'assessment'      => $request->diagnosis,
+            'procedures_done' => $request->treatment,
+            'plan'            => $request->notes,
         ]);
 
-        return redirect()->route('doctor.appointments')
+        return redirect()->route('doctor.appointments.show', $appointment)
             ->with('success', 'Clinical notes saved successfully.');
     }
 }

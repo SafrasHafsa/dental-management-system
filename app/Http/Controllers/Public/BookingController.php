@@ -17,7 +17,7 @@ class BookingController extends Controller
     public function index(): View
     {
         $services = Service::where('is_active', true)->orderBy('name')->get();
-        $doctors  = DoctorProfile::with('user')->get();
+        $doctors  = DoctorProfile::active()->with('user')->get();
 
         return view('public.booking', compact('services', 'doctors'));
     }
@@ -90,7 +90,7 @@ class BookingController extends Controller
             'first_name'  => Auth::check() ? 'nullable' : 'required|string|max:100',
             'last_name'   => Auth::check() ? 'nullable' : 'required|string|max:100',
             'email'       => Auth::check() ? 'nullable' : 'required|email',
-            'phone'       => Auth::check() ? 'nullable' : 'required|string|max:20',
+            'phone'       => Auth::check() ? 'nullable' : ['required', 'string', 'regex:/^(\+94|0)[0-9]{9}$/'],
         ]);
 
         DB::transaction(function () use ($request, &$appointment) {

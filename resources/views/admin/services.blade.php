@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 @section('title', 'Services')
+@section('datatable', true)
 
 @section('sidebar-nav')
     <div class="mb-4">
@@ -155,7 +156,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5">Duration (minutes)</label>
-                    <input x-model="form.duration_minutes" type="number" min="1" step="5" placeholder="30"
+                    <input x-model="form.duration_minutes" type="number" min="0" step="5" placeholder="30"
                            class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
                 </div>
                 <div class="flex items-end pb-1">
@@ -178,6 +179,26 @@
                 </button>
             </div>
         </form>
+    </div>
+</div>
+
+{{-- Delete Confirmation Modal --}}
+<div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
+     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    <div class="absolute inset-0 bg-black/50" @click="showDeleteModal = false"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm mx-auto"
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+        <div class="px-6 py-5">
+            <h3 class="font-semibold text-gray-900 mb-2">Delete Service</h3>
+            <p class="text-sm text-gray-500">Are you sure you want to delete this service? This cannot be undone.</p>
+        </div>
+        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+            <button type="button" @click="showDeleteModal = false"
+                    class="px-4 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">Cancel</button>
+            <button type="button" @click="confirmDelete()"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors">Delete</button>
+        </div>
     </div>
 </div>
 

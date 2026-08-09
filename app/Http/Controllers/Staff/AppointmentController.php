@@ -22,7 +22,7 @@ class AppointmentController extends Controller
             ->get();
 
         $patients = Patient::orderBy('first_name')->get(['id','first_name','last_name','patient_number']);
-        $doctors  = DoctorProfile::with('user')->get();
+        $doctors  = DoctorProfile::active()->with('user')->get();
         $services = Service::where('is_active', true)->orderBy('name')->get(['id','name','duration_minutes']);
 
         return view('staff.appointments', compact('appointments', 'patients', 'doctors', 'services'));
@@ -43,17 +43,24 @@ class AppointmentController extends Controller
         $duration = $service?->duration_minutes ?? 30;
         $start    = \Carbon\Carbon::parse($data['appointment_date'] . ' ' . $data['start_time']);
 
-        // Double-booking check
+        // Double-booking check — block if new appointment overlaps any existing slot
+        $end = $start->copy()->addMinutes($duration);
+
         $conflict = Appointment::where('doctor_profile_id', $data['doctor_profile_id'])
             ->whereDate('appointment_date', $data['appointment_date'])
             ->whereNotIn('status', ['cancelled', 'no_show'])
-            ->where('start_time', $start->format('H:i:s'))
+            ->where(function ($q) use ($start, $end) {
+                // New appointment starts during an existing one
+                $q->where('start_time', '<', $end->format('H:i:s'))
+                  ->where('end_time', '>', $start->format('H:i:s'));
+            })
             ->exists();
 
         if ($conflict) {
             return response()->json([
-                'success' => false,
-                'message' => 'This time slot is already booked for the selected doctor. Please choose a different time.'
+                'errors' => [
+                    'start_time' => ['This time slot is already booked for the selected doctor. Please choose a different time.']
+                ]
             ], 422);
         }
 

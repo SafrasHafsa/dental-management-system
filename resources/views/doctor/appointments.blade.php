@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 @section('title', 'My Schedule')
+@section('datatable', true)
 
 @section('sidebar-nav')
     <div class="mb-4">
@@ -73,7 +74,13 @@
                             @if($appt->isConfirmed())
                             <form method="POST" action="{{ route('doctor.appointments.start', $appt) }}" class="inline">
                                 @csrf @method('PATCH')
-                                <button class="text-xs font-semibold text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg transition-colors">Start</button>
+                                @if($appt->appointment_date->isToday())
+                                    <button class="text-xs font-semibold text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg transition-colors">Start</button>
+                                @else
+                                    <button type="button" disabled
+                                            title="This appointment is on {{ $appt->appointment_date->format('M d, Y') }}. You can start it on the day of the appointment."
+                                            class="text-xs font-semibold text-gray-400 bg-gray-100 px-3 py-1.5 rounded-lg cursor-not-allowed">Start</button>
+                                @endif
                             </form>
                             @elseif($appt->isInProgress())
                             <a href="{{ route('doctor.appointments.notes', $appt) }}"

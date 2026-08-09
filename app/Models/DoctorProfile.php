@@ -29,4 +29,18 @@ class DoctorProfile extends Model
     {
         return 'Dr. ' . $this->user->name;
     }
+
+    /**
+     * Only doctors whose linked user account is active
+     * and still holds the "doctor" role. Use this anywhere
+     * a doctor picker/dropdown is built, so deactivated or
+     * reassigned users drop out automatically.
+     */
+    public function scopeActive($query)
+    {
+        return $query->whereHas('user', function ($q) {
+            $q->where('is_active', true)
+              ->whereHas('roles', fn($q2) => $q2->where('name', 'doctor'));
+        });
+    }
 }

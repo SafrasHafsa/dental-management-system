@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 @section('title', 'Inventory')
+@section('datatable', true)
 
 @section('sidebar-nav')
     <div class="mb-4">
@@ -49,19 +50,20 @@
 >
 
 {{-- Toolbar --}}
+@php $lowStock = $items->filter(fn($i) => $i->current_stock <= $i->minimum_stock); @endphp
 <div class="flex items-center justify-between mb-6">
     <div>
         <h1 class="text-xl font-bold text-gray-900">Inventory</h1>
         <p class="text-sm text-gray-500 mt-0.5">
             {{ $items->count() }} items &middot;
-            <span class="text-red-500 font-medium">{{ $items->where('current_stock', '<=', 'minimum_stock')->count() }} low stock</span>
+            <span class="text-red-500 font-medium">{{ $lowStock->count() }} low stock</span>
         </p>
     </div>
     <button @click="openCreate()" class="btn-primary text-sm">+ Add Item</button>
 </div>
 
 {{-- Low stock alert --}}
-@php $lowStock = $items->filter(fn($i) => $i->current_stock <= $i->minimum_stock); @endphp
+
 @if($lowStock->count())
 <div class="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 mb-5 flex items-center gap-3">
     <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -299,6 +301,26 @@
                     <span x-show="adjLoading">Saving…</span>
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+{{-- Delete Confirmation Modal --}}
+<div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
+     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    <div class="absolute inset-0 bg-black/50" @click="showDeleteModal = false"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm mx-auto"
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+        <div class="px-6 py-5">
+            <h3 class="font-semibold text-gray-900 mb-2">Delete Item</h3>
+            <p class="text-sm text-gray-500">Are you sure you want to delete this item? This cannot be undone.</p>
+        </div>
+        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+            <button type="button" @click="showDeleteModal = false"
+                    class="px-4 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">Cancel</button>
+            <button type="button" @click="confirmDelete()"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors">Delete</button>
         </div>
     </div>
 </div>

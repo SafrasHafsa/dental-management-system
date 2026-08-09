@@ -30,9 +30,17 @@
         @if($appointment->isConfirmed())
         <form method="POST" action="{{ route('doctor.appointments.start', $appointment) }}">
             @csrf @method('PATCH')
-            <button class="text-sm font-semibold text-primary-700 bg-primary-50 hover:bg-primary-100 px-4 py-2 rounded-xl transition-colors">
-                Start Session
-            </button>
+            @if($appointment->appointment_date->isToday())
+                <button class="text-sm font-semibold text-primary-700 bg-primary-50 hover:bg-primary-100 px-4 py-2 rounded-xl transition-colors">
+                    Start Session
+                </button>
+            @else
+                <button type="button" disabled
+                        title="This appointment is scheduled for {{ $appointment->appointment_date->format('M d, Y') }}. You can start the session on the day of the appointment."
+                        class="text-sm font-semibold text-gray-400 bg-gray-100 px-4 py-2 rounded-xl cursor-not-allowed">
+                    Start Session
+                </button>
+            @endif
         </form>
         @endif
         @if($appointment->isInProgress())
@@ -46,6 +54,11 @@
                 Mark Complete
             </button>
         </form>
+        @elseif($appointment->isCompleted() && !$appointment->clinicalNotes->count())
+        <a href="{{ route('doctor.appointments.notes', $appointment) }}"
+        class="text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl transition-colors">
+            Add Clinical Notes
+        </a>
         @endif
     </div>
 </div>

@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 @section('title', 'Manage Users')
+@section('datatable', true)
 
 @section('sidebar-nav')
     <div class="mb-4">
@@ -94,13 +95,13 @@
                                 class="text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition-colors">
                                 Edit
                             </button>
-                            @if($user->id !== auth()->id())
+                            {{-- @if($user->id !== auth()->id())
                             <button
                                 @click="del('{{ $user->id }}', '{{ url('admin/users') }}')"
                                 class="text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">
                                 Delete
                             </button>
-                            @endif
+                            @endif --}}
                         </div>
                     </td>
                 </tr>

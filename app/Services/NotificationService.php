@@ -19,12 +19,19 @@ class NotificationService
         })->get();
 
         foreach ($staffAndAdmins as $user) {
+            // Route to the correct dashboard's appointment page based on
+            // this specific recipient's role — admins and staff have
+            // separate appointment detail routes/views.
+            $url = $user->isAdmin()
+                ? route('admin.appointments.show', $appointment)
+                : route('staff.appointments.show', $appointment);
+
             self::create($user->id, [
                 'title'   => 'New Appointment Booked',
                 'message' => "New appointment booked by {$appointment->patient->first_name} {$appointment->patient->last_name} on " .
                              $appointment->appointment_date->format('M d, Y') . " at " .
                              \Carbon\Carbon::parse($appointment->start_time)->format('g:i A'),
-                'url'     => route('staff.appointments.show', $appointment),
+                'url'     => $url,
                 'icon'    => 'calendar',
             ]);
         }

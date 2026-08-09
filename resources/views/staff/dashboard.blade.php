@@ -15,6 +15,8 @@
 
 @section('content')
 
+<div x-data="{ showRejectModal: false, rejectTargetId: null }">
+
 {{-- Welcome bar --}}
 <div class="flex items-center justify-between mb-6">
     <div>
@@ -98,12 +100,12 @@
                     @csrf @method('PATCH')
                     <button class="text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors">Approve</button>
                 </form>
-                <form method="POST" action="{{ route('staff.appointments.cancel', $appt) }}"
-                      x-data="confirmAction('Cancel this appointment?')">
+                <form id="reject-form-{{ $appt->id }}" method="POST" action="{{ route('staff.appointments.cancel', $appt) }}">
                     @csrf @method('PATCH')
-                    <button type="button" @click="confirm($el.closest('form'))"
-                            class="text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">Reject</button>
                 </form>
+                <button type="button"
+                        @click="rejectTargetId = 'reject-form-{{ $appt->id }}'; showRejectModal = true"
+                        class="text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors">Reject</button>
             </div>
         </div>
         @empty
@@ -179,5 +181,27 @@
     </div>
 
 </div>
+
+{{-- Reject Confirmation Modal --}}
+<div x-show="showRejectModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4"
+     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    <div class="absolute inset-0 bg-black/50" @click="showRejectModal = false"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm mx-auto"
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+        <div class="px-6 py-5">
+            <h3 class="font-semibold text-gray-900 mb-2">Reject Appointment</h3>
+            <p class="text-sm text-gray-500">Are you sure you want to reject this appointment? The patient will be notified.</p>
+        </div>
+        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+            <button type="button" @click="showRejectModal = false"
+                    class="px-4 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors">Keep Appointment</button>
+            <button type="button" @click="document.getElementById(rejectTargetId).submit()"
+                    class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors">Yes, Reject</button>
+        </div>
+    </div>
+</div>
+
+</div>{{-- end x-data --}}
 
 @endsection

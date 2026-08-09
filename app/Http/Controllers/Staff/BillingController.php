@@ -53,7 +53,7 @@ class BillingController extends Controller
             'patient_id'      => $appointment->patient_id,
             'created_by'      => auth()->id(),
             'issue_date'      => now(),
-            'due_date'        => now()->addDays(7),
+            'due_date'        => now()->addDays(30),
             'subtotal'        => $subtotal,
             'tax_rate'        => $taxRate,
             'tax_amount'      => $tax,
